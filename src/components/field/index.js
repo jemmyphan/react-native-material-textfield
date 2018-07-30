@@ -157,7 +157,7 @@ export default class TextField extends PureComponent {
       let toValue = this.focusState(props.error, state.focused);
 
       Animated
-        .timing(focus, { toValue, duration })
+        .timing(focus, { toValue, duration, useNativeDriver: true })
         .start(this.onFocusAnimationEnd);
     }
   }
@@ -376,17 +376,27 @@ export default class TextField extends PureComponent {
 
     let borderBottomColor = restricted?
       errorColor:
-      focus.interpolate({
-        inputRange: [-1, 0, 1],
-        outputRange: [errorColor, baseColor, tintColor],
-      });
+      focus._value === -1?
+        errorColor:
+        focus._value >= 0 && focus._value < 1?
+          baseColor:
+          tintColor
+      // focus.interpolate({
+      //   inputRange: [-1, 0, 1],
+      //   outputRange: [errorColor, baseColor, tintColor],
+      // });
 
     let borderBottomWidth = restricted?
       activeLineWidth:
-      focus.interpolate({
-        inputRange: [-1, 0, 1],
-        outputRange: [activeLineWidth, lineWidth, activeLineWidth],
-      });
+      focus._value === -1?
+        activeLineWidth:
+        focus._value >= 0 && focus._value < 1?
+          lineWidth:
+          activeLineWidth
+      // focus.interpolate({
+      //   inputRange: [-1, 0, 1],
+      //   outputRange: [activeLineWidth, lineWidth, activeLineWidth],
+      // });
 
     let inputContainerStyle = {
       paddingTop: labelHeight,
@@ -431,10 +441,15 @@ export default class TextField extends PureComponent {
 
       fontSize: title?
         titleFontSize:
-        focus.interpolate({
-          inputRange:  [-1, 0, 1],
-          outputRange: [titleFontSize, 0, 0],
-        }),
+        focus._value === -1?
+          titleFontSize:
+          focus._value >= 0 && focus._value < 1?
+            0:
+            0
+        // focus.interpolate({
+        //   inputRange:  [-1, 0, 1],
+        //   outputRange: [titleFontSize, 0, 0],
+        // }),
     };
 
     let titleStyle = {
@@ -452,10 +467,15 @@ export default class TextField extends PureComponent {
       flexDirection: 'row',
       height: (title || limit)?
         titleFontSize * 2:
-        focus.interpolate({
-          inputRange:  [-1, 0, 1],
-          outputRange: [titleFontSize * 2, 8, 8],
-        }),
+        focus._value === -1?
+          titleFontSize:
+          focus._value >= 0 && focus._value < 1?
+            8:
+            8
+        // focus.interpolate({
+        //   inputRange:  [-1, 0, 1],
+        //   outputRange: [titleFontSize * 2, 8, 8],
+        // }),
     };
 
     let containerProps = {

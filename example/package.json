@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
-    "android": "node node_modules/react-native/local-cli/cli.js run-android"
+    "android": "node node_modules/react-native/local-cli/cli.js run-android",
+    "start": "node node_modules/react-native/local-cli/cli.js start --reset-cache"
   },
   "dependencies": {
     "react": "16.0.0",
